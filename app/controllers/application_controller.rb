@@ -3,7 +3,7 @@ class ApplicationController < ActionController::API
 
   def encode_token(payload)
 
-    JWT.encode(payload, 'ilovebooba')
+    JWT.encode(payload, ENV["jwt_key"])
   end
 
   def auth_header
@@ -16,7 +16,7 @@ class ApplicationController < ActionController::API
       token = auth_header.split(' ')[1]
       # header: { 'Authorization': 'Bearer <token>' }
       begin
-        JWT.decode(token, 'ilovebooba', true, algorithm: 'HS256')
+        JWT.decode(token, ENV["jwt_key"], true, algorithm: 'HS256')
       rescue JWT::DecodeError
         nil
       end
